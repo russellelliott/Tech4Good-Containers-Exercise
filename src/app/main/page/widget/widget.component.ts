@@ -28,6 +28,11 @@ export class WidgetComponent implements OnInit {
   // --------------- DATA BINDING ------------------------
 
   // --------------- EVENT BINDING -----------------------
+  /** Function for emitting an edit goals event */
+  edit() {
+    //this.editGoals.emit()
+    console.log("edit!");
+  }
 
   // --------------- HELPER FUNCTIONS AND OTHER ----------
 

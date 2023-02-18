@@ -18,3 +18,9 @@ In the example, page actions, effects, etc reference load data and such
 ## Plan
 1. Display the given data first
 2. figure out how to get from database
+
+
+## Resources
+
+Loop over object properties
+https://stackoverflow.com/questions/45819123/how-to-loop-over-object-properties-with-ngfor-in-angular

@@ -15,6 +15,43 @@ This imports the `QuarterData` type from a page model in the state folder. For t
 In the example, page actions, effects, etc reference load data and such
 `core/store/long-term-goal`
 
+The page appears to get the data from this code in `page.component.ts`
+```
+/** Raw time in milliseconds from 1970/01/01 00:00:00:000 **/
+currentDateTime$: Observable<number> = interval(1000).pipe(
+  map(() => Date.now()),
+);
+
+/** Current quarter needed to select the right quarter from DB. */
+currentQuarterStartTime$: Observable<number> = this.currentDateTime$.pipe(
+  map((now) => this.dateToQuarterStartTime(now)),
+  distinctUntilChanged(),
+);
+
+/** Get the quarter data. */
+quarterData$: Observable<QuarterData> = this.selectors.selectQuarterData(
+  this.currentQuarterStartTime$,
+  this.currentUser$,
+  this.containerId,
+);
+```
+The container id is given in the this component's `page.component.ts` already, so that is used to get the data.
+
+Also, the data must be loaded after setup
+```
+combineLatest(this.currentQuarterStartTime$, this.currentUser$).pipe(
+  takeUntil(this.unsubscribe$),
+).subscribe(([quarterStartTime, currentUser]) => {
+  this.store.dispatch(
+    new LoadData({
+      quarterStartTime,
+      currentUser,
+    }, this.containerId)
+  );
+});
+```
+Like this: https://causeway.soe.ucsc.edu/#/reference/-container-selectors/1?od=4
+
 ## Plan
 1. Display the given data first
 2. figure out how to get from database

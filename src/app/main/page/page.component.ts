@@ -13,6 +13,15 @@ import { LoadData, Cleanup } from './+state/page.actions';
 import { RouterNavigate } from '../../core/store/app.actions';
 import { UpdateUser } from '../../core/store/user/user.actions';
 
+import { LongTermGoal } from '../../core/store/long-term-goal/long-term-goal.model';
+
+import { EntitySelectorService } from '../../core/store/app.selectors';
+
+import { StreamLongTermGoal } from '../../core/store/long-term-goal/long-term-goal.actions';
+
+import { QuarterGoal } from '../../core/store/quarter-goal/quarter-goal.model';
+import { StreamQuarterGoal, UpdateQuarterGoal } from '../../core/store/quarter-goal/quarter-goal.actions';
+
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
@@ -31,6 +40,9 @@ export class PageComponent implements OnInit {
   /** Container id for selectors and loading. */
   containerId: string = this.db.createId();
 
+  /** Get stream of the first quarter goal from Redux Store */
+  longTermGoal$: Observable<LongTermGoal> = this.slRx.selectLongTermGoal('ltg', this.containerId);
+
   // --------------- DATA BINDING ------------------------
 
   // --------------- EVENT BINDING -----------------------
@@ -44,7 +56,8 @@ export class PageComponent implements OnInit {
     private route: ActivatedRoute,
     private selectors: PageSelectors,
     private store: Store<fromStore.State>,
-    private db: FirebaseService
+    private db: FirebaseService,
+    private slRx: EntitySelectorService,
   ) {
   }
 
@@ -52,7 +65,8 @@ export class PageComponent implements OnInit {
     // --------------- EVENT HANDLING ----------------------
 
     // --------------- LOAD DATA ---------------------------
-    // Once everything is set up, load the data for the role.
+    // Load the quarter goal with id 'qg1'
+    this.store.dispatch(new StreamLongTermGoal([['__id', '==', 'ltg']], {}, this.containerId));
   }
 
   ngOnDestroy() {

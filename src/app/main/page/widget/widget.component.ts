@@ -1,4 +1,11 @@
-import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { WidgetAnimations } from './widget.animations';
 import { LongTermGoal } from '../../../core/store/long-term-goal/long-term-goal.model';
 
@@ -13,13 +20,15 @@ export class WidgetComponent implements OnInit {
   // --------------- INPUTS AND OUTPUTS ------------------
 
   /** The long term goal. */
-  @Input() longTermGoal: LongTermGoal = {
+  /*@Input() longTermGoal: LongTermGoal = {
     __id: 'ltg',
     __userId: 'test-user',
     oneYear: 'Improve my grades',
     fiveYear: 'Land a well paying job that I enjoy',
-  };
-    
+  };*/
+
+  @Input() longTermGoal: LongTermGoal;
+
   /** Initiate edit of long term goals. */
   @Output() editGoals: EventEmitter<void> = new EventEmitter<void>();
 
@@ -31,13 +40,12 @@ export class WidgetComponent implements OnInit {
   /** Function for emitting an edit goals event */
   edit() {
     //this.editGoals.emit()
-    console.log("edit!");
+    console.log('edit!');
   }
 
   // --------------- HELPER FUNCTIONS AND OTHER ----------
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 }

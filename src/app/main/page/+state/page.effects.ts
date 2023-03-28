@@ -8,7 +8,12 @@ import { mergeMap, tap, map } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
 import * as fromStore from '../../../core/store/app.reducer';
 
-import { ActionFlow, RouterNavigate, LoadAction, Unsubscribe } from '../../../core/store/app.actions';
+import {
+  ActionFlow,
+  RouterNavigate,
+  LoadAction,
+  Unsubscribe,
+} from '../../../core/store/app.actions';
 import { PageActionTypes, Cleanup, LoadData } from './page.actions';
 
 import { StreamUser } from '../../../core/store/user/user.actions';

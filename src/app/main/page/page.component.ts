@@ -152,6 +152,9 @@ export class PageComponent implements OnInit {
         this.store.dispatch(
           new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
         );
+        this.store.dispatch(
+          new StreamLongTermGoal([['__id', '==', 'ltg']], {}, this.containerId)
+        );
         /*this.dialog.open(ModalComponent, {
           data: {
             longTermData: longTermData,

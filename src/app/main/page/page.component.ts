@@ -127,6 +127,31 @@ export class PageComponent implements OnInit {
     this.openEditModal$
       .pipe(withLatestFrom(this.longTermGoal$), takeUntil(this.unsubscribe$))
       .subscribe(([_, longTermData]) => {
+        console.log('i have been clicked!');
+
+        // edit the one-year goal
+        console.log(this.longTermData.oneYear);
+        let oneYear = prompt(
+          'Enter a goal you want to achieve in 1 year.',
+          this.longTermData.oneYear
+        );
+        if (oneYear != null) {
+          this.longTermData.oneYear = oneYear;
+        }
+
+        // edit the five-year goal
+        console.log(this.longTermData.fiveYear);
+        let fiveYear = prompt(
+          'Enter a goal you want to achieve in 5 years.',
+          this.longTermData.fiveYear
+        );
+        if (fiveYear != null) {
+          this.longTermData.fiveYear = fiveYear;
+        }
+
+        this.store.dispatch(
+          new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
+        );
         /*this.dialog.open(ModalComponent, {
           data: {
             longTermData: longTermData,

@@ -117,12 +117,23 @@ export class PageComponent implements OnInit {
 
     this.longTermData.__id = 'ltg'; //this.data.longTermData.__id;
     this.longTermData.__userId = ''; //this.data.longTermData.__userId;
-    this.longTermData.oneYear = 'eat a large crate of bananas';//this.data.longTermData.oneYear;
+    this.longTermData.oneYear = 'eat a large crate of bananas'; //this.data.longTermData.oneYear;
     this.longTermData.fiveYear = 'acquire something cool'; //this.data.longTermData.fiveYear;
 
     this.store.dispatch(
       new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
     );
+
+    this.openEditModal$
+      .pipe(withLatestFrom(this.longTermGoal$), takeUntil(this.unsubscribe$))
+      .subscribe(([_, longTermData]) => {
+        /*this.dialog.open(ModalComponent, {
+          data: {
+            longTermData: longTermData,
+            updateGoals: (ltg: LongTermGoal) => this.saveGoals$.next(ltg),
+          },
+        });*/
+      });
 
     /*this.openEditModal$
       .pipe(withLatestFrom(this.longTermGoal$), takeUntil(this.unsubscribe$))

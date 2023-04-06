@@ -20,13 +20,6 @@ export class WidgetComponent implements OnInit {
   // --------------- INPUTS AND OUTPUTS ------------------
 
   /** The long term goal. */
-  /*@Input() longTermGoal: LongTermGoal = {
-    __id: 'ltg',
-    __userId: 'test-user',
-    oneYear: 'Improve my grades',
-    fiveYear: 'Land a well paying job that I enjoy',
-  };*/
-
   @Input() longTermGoal: LongTermGoal;
 
   /** Initiate edit of long term goals. */
@@ -37,11 +30,6 @@ export class WidgetComponent implements OnInit {
   // --------------- DATA BINDING ------------------------
 
   // --------------- EVENT BINDING -----------------------
-  /** Function for emitting an edit goals event */
-  edit() {
-    //this.editGoals.emit()
-    console.log('edit!');
-  }
 
   // --------------- HELPER FUNCTIONS AND OTHER ----------
 

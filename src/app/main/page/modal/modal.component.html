@@ -1,3 +1,10 @@
 <div class="modal">
-  modal works!
+  <form (ngSubmit)="submit()">
+    <div class="task">
+      <img class="drag-handle" height="20" />
+      <input [(ngModel)]="this.longTermData.oneYear" name="one-year" />
+      <input [(ngModel)]="this.longTermData.fiveYear" name="five-year" />
+    </div>
+    <button class="save" type="submit">Save</button>
+  </form>
 </div>

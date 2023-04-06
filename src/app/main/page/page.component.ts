@@ -79,6 +79,13 @@ export class PageComponent implements OnInit {
     this.containerId
   );
 
+  longTermData: LongTermGoal = {
+    __id: '',
+    __userId: '',
+    oneYear: '',
+    fiveYear: '',
+  };
+
   //stream to save the goals
   saveGoals$: Subject<LongTermGoal> = new Subject();
 
@@ -106,6 +113,15 @@ export class PageComponent implements OnInit {
     // Load the quarter goal with id 'qg1'
     this.store.dispatch(
       new StreamLongTermGoal([['__id', '==', 'ltg']], {}, this.containerId)
+    );
+
+    this.longTermData.__id = 'ltg'; //this.data.longTermData.__id;
+    this.longTermData.__userId = ''; //this.data.longTermData.__userId;
+    this.longTermData.oneYear = 'eat a large crate of bananas';//this.data.longTermData.oneYear;
+    this.longTermData.fiveYear = 'acquire something cool'; //this.data.longTermData.fiveYear;
+
+    this.store.dispatch(
+      new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
     );
 
     /*this.openEditModal$

@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 // External Modules
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+
 
 // Containers
 
@@ -19,6 +21,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     // External Modules
     MatSnackBarModule,
+    MatDialogModule,
   ],
   declarations: [
     // Containers

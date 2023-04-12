@@ -18,6 +18,8 @@ import { PageActionTypes, Cleanup, LoadData } from './page.actions';
 
 import { StreamUser } from '../../../core/store/user/user.actions';
 
+import { StreamLongTermGoal } from '../../../core/store/long-term-goal/long-term-goal.actions';
+
 @Injectable()
 export class PageEffects {
   /** Load data. */
@@ -26,7 +28,16 @@ export class PageEffects {
       ofType<LoadData>(PageActionTypes.LOAD_DATA),
       mergeMap((action: LoadData) => {
         const loadId = action.correlationId;
-        return [];
+        const currentUser = action.payload.currentUser;
+
+        return [
+          new StreamLongTermGoal(
+            [['__userId', '==', currentUser.__id]],
+            {},
+            loadId
+          ),
+        ];
+        // return [];
       })
     )
   );

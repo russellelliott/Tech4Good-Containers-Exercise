@@ -62,6 +62,11 @@ import { UpdateLongTermGoal } from '../../core/store/long-term-goal/long-term-go
 export class PageComponent implements OnInit {
   // --------------- ROUTE PARAMS & CURRENT USER ---------
 
+  currentUser$: Observable<User> = this.store.pipe(
+    select(fromAuth.selectUser),
+    filter((user) => user !== null)
+  );
+
   // --------------- LOCAL AND GLOBAL STATE --------------
 
   // --------------- DB ENTITY DATA ----------------------
@@ -90,7 +95,10 @@ export class PageComponent implements OnInit {
   saveGoals$: Subject<LongTermGoal> = new Subject();
 
   // --------------- DATA BINDING ------------------------
-
+  longTermData$: Observable<LongTermGoal> = this.selectors.selectLongTermData(
+    this.currentUser$,
+    this.containerId
+  );
   // --------------- EVENT BINDING -----------------------
 
   // --------------- HELPER FUNCTIONS AND OTHER ----------
@@ -103,68 +111,13 @@ export class PageComponent implements OnInit {
     private selectors: PageSelectors,
     private store: Store<fromStore.State>,
     private db: FirebaseService,
-    private slRx: EntitySelectorService //public dialog: MatDialog
+    private slRx: EntitySelectorService, //public dialog: MatDialog
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    // --------------- EVENT HANDLING ----------------------
-
-    // --------------- LOAD DATA ---------------------------
-    // Load the quarter goal with id 'qg1'
-    this.store.dispatch(
-      new StreamLongTermGoal([['__id', '==', 'ltg']], {}, this.containerId)
-    );
-
-    this.longTermData.__id = 'ltg'; //this.data.longTermData.__id;
-    this.longTermData.__userId = ''; //this.data.longTermData.__userId;
-    this.longTermData.oneYear = 'eat a large crate of bananas'; //this.data.longTermData.oneYear;
-    this.longTermData.fiveYear = 'acquire something cool'; //this.data.longTermData.fiveYear;
-
-    this.store.dispatch(
-      new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
-    );
-
     this.openEditModal$
-      .pipe(withLatestFrom(this.longTermGoal$), takeUntil(this.unsubscribe$))
-      .subscribe(([_, longTermData]) => {
-        console.log('i have been clicked!');
-
-        // edit the one-year goal
-        console.log(this.longTermData.oneYear);
-        let oneYear = prompt(
-          'Enter a goal you want to achieve in 1 year.',
-          this.longTermData.oneYear
-        );
-        if (oneYear != null) {
-          this.longTermData.oneYear = oneYear;
-        }
-
-        // edit the five-year goal
-        console.log(this.longTermData.fiveYear);
-        let fiveYear = prompt(
-          'Enter a goal you want to achieve in 5 years.',
-          this.longTermData.fiveYear
-        );
-        if (fiveYear != null) {
-          this.longTermData.fiveYear = fiveYear;
-        }
-
-        this.store.dispatch(
-          new UpdateLongTermGoal('ltg', this.longTermData, this.containerId)
-        );
-        this.store.dispatch(
-          new StreamLongTermGoal([['__id', '==', 'ltg']], {}, this.containerId)
-        );
-        /*this.dialog.open(ModalComponent, {
-          data: {
-            longTermData: longTermData,
-            updateGoals: (ltg: LongTermGoal) => this.saveGoals$.next(ltg),
-          },
-        });*/
-      });
-
-    /*this.openEditModal$
-      .pipe(withLatestFrom(this.longTermGoal$), takeUntil(this.unsubscribe$))
+      .pipe(withLatestFrom(this.longTermData$), takeUntil(this.unsubscribe$))
       .subscribe(([_, longTermData]) => {
         this.dialog.open(ModalComponent, {
           data: {
@@ -178,9 +131,29 @@ export class PageComponent implements OnInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((longTermGoal) => {
         this.store.dispatch(
-          new UpdateLongTermGoal('ltg', longTermGoal, this.containerId)
+          new UpdateLongTermGoal(
+            longTermGoal.__id,
+            longTermGoal,
+            this.containerId
+          )
         );
-      });*/
+      });
+
+    // --------------- LOAD DATA ---------------------------
+    // Once everything is set up, load the data for the role.
+
+    this.currentUser$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((currentUser) => {
+        this.store.dispatch(
+          new LoadData(
+            {
+              currentUser,
+            },
+            this.containerId
+          )
+        );
+      });
   }
 
   ngOnDestroy() {

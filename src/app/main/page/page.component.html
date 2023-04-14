@@ -1,6 +1,6 @@
 <div class="page-container">
   <app-widget
-    [longTermGoal]="longTermGoal$ | async"
+    [longTermGoal]="longTermData$ | async"
     (editGoals)="this.openEditModal$.next()"
   ></app-widget>
 </div>
